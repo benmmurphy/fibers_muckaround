@@ -1,0 +1,18 @@
+{
+  "author": "Ben <benmmurphy@gmail.com>",
+  "name": "fibers_muckaround",
+  "description": "Mucking around with express and fibers",
+  "version": "0.0.0",
+  "repository": {
+    "url": ""
+  },
+  "dependencies": {
+    "fibers": "0.6.4",
+    "express": "2.5.8"
+   },
+  "devDependencies": {},
+  "optionalDependencies": {},
+  "engines": {
+    "node": "*"
+  }
+}
