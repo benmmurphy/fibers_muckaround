@@ -46,7 +46,13 @@ function get_async(options) {
 };
 
 function get(options) {
-  return get_async(options).wait();
+  try {
+    return get_async(options).wait();
+  } catch (e) {
+    // dodgy hack for nicer stacktraces. must be doing something wrong :(
+    e.stack = new Error().stack;
+    throw e;
+  }
 };
 
 app.get('/', function(req, res) {
@@ -60,6 +66,7 @@ app.get('/error', function(req, res) {
 });
 
 app.get('/crash', function(req, res) {
+  var response = get({host: 'google.com'});
   get({host: 'localhost', port: 6666});
 });
 
