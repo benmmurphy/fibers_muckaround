@@ -6,21 +6,25 @@ var stat = Future.wrap(fs.stat);
 
 var app = express.createServer();
 
-var original_get = app.get;
+function sync_express(app) {
+  var original_get = app.get;
 
-app.get = function(path, cb) {
-  original_get.call(app, path, function(req, res) {
-    Fiber(function() {
-      try {
-        cb(req, res);
-      } catch (e) {
-        console.log("Error", e.message);
-        console.log("Stack", e.stack);
-        res.send("Errorz", 503);
-      }
-    }).run();
-  });
+  app.get = function(path, cb) {
+    original_get.call(app, path, function(req, res) {
+      Fiber(function() {
+        try {
+          cb(req, res);
+        } catch (e) {
+          console.log("Error", e.message);
+          console.log("Stack", e.stack);
+          res.send("Errorz", 503);
+        }
+      }).run();
+    });
+  };
 };
+
+sync_express(app);
 
 function get_async(options) {
   var future = new Future();
